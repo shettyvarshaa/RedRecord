@@ -3,76 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
     <title>UI Replication</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #1b1b1b;
-            color: #ffffff;
-        }
-        .container {
-            display: flex;
-            height: 100vh;
-        }
-        .sidebar {
-            width: 250px;
-            background-color: #111111;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .sidebar .sections, .sidebar .profile {
-            display: flex;
-            flex-direction: column;
-        }
-        .sidebar .sections a, .sidebar .profile a {
-            color: #ffffff;
-            text-decoration: none;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-        }
-        .sidebar .sections a.active {
-            color: #00ff9f;
-        }
-        .sidebar .sections a img, .sidebar .profile a img {
-            margin-right: 10px;
-        }
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: #1b1b1b;
-        }
-        .recording {
-            background-color: #303030;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .recording button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            background-color: #00ff9f;
-            color: #111111;
-            cursor: pointer;
-        }
-        .notes {
-            background-color: #303030;
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .notes h2 {
-            margin-top: 0;
-        }
-        .notes p {
-            margin: 10px 0;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
