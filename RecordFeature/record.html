@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+    <title>UI Replication</title>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="sections">
+                <a href="#" class="active">
+                    Anatomy
+                </a>
+                <a href="#">
+                     Physiology
+                </a>
+                <a href="#">
+                     Emergency Medicine
+                </a>
+                <a href="#">
+                     Anesthesiology
+                </a>
+                <a href="#">
+                     Add new subject
+                </a>
+            </div>
+            <div class="profile">
+                <a href="#">
+                     Ryan Lee
+                </a>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="recording">
+                <h2 id="recording-status">Recording...</h2>
+                <button id="toggle-recording" onclick="toggleRecording()">Stop Recording</button>
+            </div>
+            <div class="notes">
+                <h2>Introduction to Cadaver Dissection</h2>
+                <p>Cadaver dissection is a fundamental part of medical education, providing an unparalleled opportunity to study human anatomy in a hands-on manner. It allows students to explore the complex structures of the human body, understand spatial relationships between organs, and gain insights into anatomical variations.</p>
+                <h3>Preparation for Dissection</h3>
+                <p>1. Ethical Considerations:</p>
+                <ul>
+                    <li>Understand the importance of respect and care when handling human remains.</li>
+                    <li>Acknowledge the generosity of body donors and their contribution to medical education.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isRecording = true;
+
+        function toggleRecording() {
+            const statusElement = document.getElementById('recording-status');
+            const buttonElement = document.getElementById('toggle-recording');
+
+            if (isRecording) {
+                statusElement.innerText = 'Recording stopped';
+                buttonElement.innerText = 'Start Recording';
+                isRecording = false;
+            } else {
+                statusElement.innerText = 'Recording...';
+                buttonElement.innerText = 'Stop Recording';
+                isRecording = true;
+            }
+        }
+    </script>
+</body>
+</html>
