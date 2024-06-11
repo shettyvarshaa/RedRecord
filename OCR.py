@@ -1,9 +1,12 @@
 from nanonets import NANONETSOCR
 import os
+from dotenv import load_dotenv, dotenv_values 
+
 model = NANONETSOCR()
+load_dotenv()
 
 
-model.set_token('0bd728c2-2506-11ef-b795-d6d3c2ad6cc3')
+model.set_token(os.getenv('API_KEY'))
 
 def imgtotext(image_path):
     imgtotext_filename = "imgtotext_" + os.path.basename(image_path).split('.')[0] + ".txt"
