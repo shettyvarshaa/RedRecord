@@ -1,13 +1,13 @@
 import json
 
-import secrets
+import os
 from urllib import request
 
 URL = "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent"
 
 
 def generateCall(prompt):
-    endpoint = URL + "?key=" + secrets.GEMINI_API
+    endpoint = URL + "?key=" + os.getenv('GEMINI_KEY')
     headers = {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
