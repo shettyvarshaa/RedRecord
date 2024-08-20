@@ -1,0 +1,15 @@
+venv/
+*/venv/
+__pycache__/
+*/__pycache__/
+node_modules/
+.env
+
+# # Ignoring the pre-converted and post-converted audio files
+# audio/*.mp3
+# audio/audio_output/*.txt
+
+# # Ignoring the pre-converted and post-converted image files
+# images/*.png
+# images/*.jpeg
+# images/image_output/*.txt

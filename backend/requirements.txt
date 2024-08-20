@@ -1,0 +1,6 @@
+fastapi
+pydantic
+dotenv
+openai-whisper
+ffmpeg-python
+ocr-nanonets-wrapper
