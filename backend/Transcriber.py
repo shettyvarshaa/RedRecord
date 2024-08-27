@@ -11,4 +11,4 @@ def transcribe_audio_file(audio_path):
     with open(transcription_path, "w") as f:
         f.write(result['text'])
 
-    return transcription_path
+    return result['text']

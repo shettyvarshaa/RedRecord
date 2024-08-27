@@ -9,19 +9,13 @@ import { useState, ChangeEvent } from "react";
 import Markdown from "react-markdown";
 
 function Pottu(props: any) {
-  let dis1, dis2;
-  if (props.status == 1) {
-    dis1 = "none";
-    dis2 = "inherit";
-  } else {
-    dis2 = "none";
-    dis1 = "inherit";
-  }
+  const { status, transcribedText, content, change, upload } = props;
+
   return (
     <>
       <div
         className="flex flex-col items-center justify-center flex-1"
-        style={{ display: dis1 }}
+        style={{ display: status === 0 ? "inherit" : "none" }}
       >
         <h2 className="text-3xl font-bold text-white">Start taking notes!</h2>
         <p className="mt-2 text-center text-gray-400">
@@ -29,16 +23,28 @@ function Pottu(props: any) {
         </p>
         <input
           type="file"
-          onChange={props.change}
+          onChange={change}
           className="text-sm text-gray-400 bg-gray-800 border border-gray-700 rounded p-2"
         />
-        <Button className="mt-4 bg-green-500 text-white" onClick={props.upload}>
+        <Button className="mt-4 bg-green-500 text-white" onClick={upload}>
           Upload
         </Button>
       </div>
-      <div>
-        <p className="mt-2 text-center text-gray-400" style={{ display: dis2 }}>
-          <Markdown className="text-left">{props.content}</Markdown>
+
+      <div style={{ display: status === 1 ? "inherit" : "none" }}>
+        <p className="mt-2 text-center text-gray-400">
+          {status === 1 && content === "Analayzinngg...." && (
+              <p className="text-left leading-6"> {content}</p>
+          )}
+          {status === 1 && content !== "Analayzinngg...." && (
+            <span>
+              <span className="font-semibold text-white">
+                Transcribed Text:
+              </span>
+              <p className="text-left my-8">{transcribedText}</p>
+              <Markdown className="text-left leading-6">{content}</Markdown>
+            </span>
+          )}
         </p>
       </div>
     </>
@@ -58,7 +64,8 @@ function Pottu(props: any) {
 
 export function Dash() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<number>(0);
+  const [status, setStatus] = useState<number>(0); // 0: Initial, 1: Transcribing/Finished
+  const [transcribedText, setTranscribedText] = useState<string>("");
   const [content, setContent] = useState<string>("");
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -71,17 +78,18 @@ export function Dash() {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      fetch("http://http://127.0.0.1:8000/transcribe", {
+      setStatus(1);
+      setContent("Analayzinngg....");
+
+      fetch("http://127.0.0.1:5000/transcribe", {
         method: "POST",
         body: formData,
       })
         .then((response) => response.text())
         .then((data) => {
           console.log("File uploaded successfully:", data);
-          setStatus(1);
-          setContent("Analayzinngg....");
+          setTranscribedText(data);
 
-          // Make another fetch request to localhost:8000/generate with the transcription text
           return fetch("http://127.0.0.1:8000/generate", {
             method: "POST",
             headers: {
@@ -93,7 +101,6 @@ export function Dash() {
         .then((response) => response.json())
         .then((data) => {
           console.log("Text content processed successfully:", data);
-          setStatus(1);
           setContent(data.summary);
         })
         .catch((error) => {
@@ -101,9 +108,6 @@ export function Dash() {
           setStatus(0);
           setContent("Error in file upload or processing");
         });
-
-      setStatus(1);
-      setContent("Transcribing.....");
     } else {
       alert("Please select a file first.");
     }
@@ -111,7 +115,7 @@ export function Dash() {
 
   return (
     <div className="flex h-screen bg-[#121212]">
-      <aside className="w-64 flex flex-col border-r border-gray-800">
+      <aside className="w-64 flex flex-col border-r border-gray-800"> 
         <div className="flex flex-col px-4 py-6">
           <div className="mt-6">
             <div className="flex items-center space-x-2 text-white">
@@ -186,6 +190,7 @@ export function Dash() {
           <Pottu
             change={handleFileChange}
             upload={handleUpload}
+            transcribedText={transcribedText}
             content={content}
             status={status}
           />

@@ -24,9 +24,9 @@ def transcribe_audio():
     audio_path = os.path.join("audio/", file.filename)
     file.save(audio_path)
     
-    transcription_path = transcribe_audio_file(audio_path)
+    text = transcribe_audio_file(audio_path)
     
-    return send_file(transcription_path, as_attachment=True)
+    return text
 
 @app.route('/imgtotext', methods = ['POST'])
 def image_to_text():

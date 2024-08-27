@@ -4,3 +4,5 @@ dotenv
 openai-whisper
 ffmpeg-python
 ocr-nanonets-wrapper
+flask
+flask-cors

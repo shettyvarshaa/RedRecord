@@ -20,11 +20,9 @@ app.add_middleware(
 async def generate(session: Session):
     return {"summary": gemini.generateSummary(session.transcript)}
 
-
 @app.post("/randomQuestion")
 async def randomQuestion(contents: PreviousContent):
     return {"question": gemini.generateRandomQuestion(contents.contentList)}
-
 
 @app.get("/hello/{name}")
 async def say_hello(name: str):
