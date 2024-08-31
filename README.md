@@ -1,3 +1,3 @@
-# Red Record - AI Study Companion
+# Red Record
 
 
