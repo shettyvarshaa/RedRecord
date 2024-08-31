@@ -1,2 +1,3 @@
-# RedRecord
+# Red Record - AI Study Companion
+
 
