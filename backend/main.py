@@ -5,6 +5,7 @@ import os
 
 import gemini
 from Transcriber import transcribe_audio_file
+from OCR import image_to_text
 from datamodels import Session, PreviousContent
 
 app = FastAPI()
@@ -35,8 +36,26 @@ async def transcribe(file: UploadFile):
     audio_path = os.path.join("audio/", file.filename)
     # file.save(audio_path)
     
-    text = transcribe_audio_file(audio_path)
-    return { "message": text }
+    transcribedText = transcribe_audio_file(audio_path)
+    return { "message": transcribedText }
+
+@app.post("/ocr")
+async def getText(file: UploadFile = File(...)):
+    # print(file)
+    # if 'file' not in file:
+    #     return 'No file part', 400
+    # if file.filename == '':
+    #     return 'No selected file', 400
+    
+    image_path = os.path.join("images/", file.filename)
+    print(image_path)
+    with open(image_path, "wb") as imgFile:
+        imgFile.write(file.file.read())
+    # file.write(image_path)
+
+    ocrText = image_to_text(image_path)
+
+    return { "ocrText": ocrText }
 
 @app.post("/randomQuestion")
 async def randomQuestion(contents: PreviousContent):
