@@ -1,4 +1,4 @@
-fastapi
+fastapi[standard]
 pydantic
 python-dotenv
 openai-whisper
