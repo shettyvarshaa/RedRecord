@@ -1,6 +1,6 @@
 fastapi
 pydantic
-dotenv
+python-dotenv
 openai-whisper
 ffmpeg-python
 ocr-nanonets-wrapper
