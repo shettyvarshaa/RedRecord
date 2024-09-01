@@ -5,11 +5,19 @@
  */
 import { AvatarImage, AvatarFallback, Avatar } from "./ui/avatar";
 import { Button } from "./ui/button";
-import { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import Markdown from "react-markdown";
 
-function Pottu(props: any) {
-  const { status, transcribedText, content, change, upload } = props;
+export interface ResponseProps {
+  change: (event: ChangeEvent<HTMLInputElement>) => void;
+  upload: () => void;
+  transcribedText: string;
+  content: string;
+  status: number;
+}
+
+function Response(props: ResponseProps) {
+  const { change, upload, transcribedText, content, status } = props;
 
   return (
     <>
@@ -19,7 +27,7 @@ function Pottu(props: any) {
       >
         <h2 className="text-3xl font-bold text-white">Start taking notes!</h2>
         <p className="mt-2 text-center text-gray-400">
-          Kickstart your practical learning with Peone!
+          Kickstart your practical learning with 
         </p>
         <input
           type="file"
@@ -32,26 +40,26 @@ function Pottu(props: any) {
       </div>
 
       <div style={{ display: status === 1 ? "inherit" : "none" }}>
-        <p className="mt-2 text-center text-gray-400">
-          {status === 1 && content === "Analayzinngg...." && (
-              <p className="text-left leading-6"> {content}</p>
+        <div className="mt-2 text-center text-gray-400">
+          {status === 1 && content === "Analyzing..." && (
+            <p className="text-left leading-6 my-4"> {content}</p>
           )}
-          {status === 1 && content !== "Analayzinngg...." && (
+          {status === 1 && content !== "Analyzing..." && (
             <span>
               <span className="font-semibold text-white">
                 Transcribed Text:
               </span>
-              <p className="text-left my-8">{transcribedText}</p>
-              <Markdown className="text-left leading-6">{content}</Markdown>
+              <p className="text-left my-4">{transcribedText}</p>
+              <Markdown className="text-left leading-6 my-4">{content}</Markdown>
             </span>
           )}
-        </p>
+        </div>
       </div>
     </>
   );
 }
 
-// function Subject(props: any) {
+// function Subject(props: React.SVGProps<SVGSVGElement>) {
 //   return (
 //     <>
 //       <div className="flex items-center space-x-2 text-white bg-gray-700 px-2 py-1 rounded">
@@ -64,7 +72,7 @@ function Pottu(props: any) {
 
 export function Dash() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [status, setStatus] = useState<number>(0); // 0: Initial, 1: Transcribing/Finished
+  const [status, setStatus] = useState<number>(0);
   const [transcribedText, setTranscribedText] = useState<string>("");
   const [content, setContent] = useState<string>("");
 
@@ -79,23 +87,23 @@ export function Dash() {
       formData.append("file", selectedFile);
 
       setStatus(1);
-      setContent("Analayzinngg....");
+      setContent("Analyzing...");
 
-      fetch("http://127.0.0.1:5000/transcribe", {
+      fetch("http://127.0.0.1:8000/transcribe", {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((data) => {
-          console.log("File uploaded successfully:", data);
-          setTranscribedText(data);
+          console.log("File uploaded successfully: ", data);
+          setTranscribedText(data.message);
 
           return fetch("http://127.0.0.1:8000/generate", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ transcript: data }),
+            body: JSON.stringify({ transcript: data.message }),
           });
         })
         .then((response) => response.json())
@@ -115,7 +123,7 @@ export function Dash() {
 
   return (
     <div className="flex h-screen bg-[#121212]">
-      <aside className="w-64 flex flex-col border-r border-gray-800"> 
+      <aside className="w-64 flex flex-col border-r border-gray-800">
         <div className="flex flex-col px-4 py-6">
           <div className="mt-6">
             <div className="flex items-center space-x-2 text-white">
@@ -187,7 +195,7 @@ export function Dash() {
               <PowerIcon className="h-5 w-5 text-gray-400" />
             </div>
           </header>
-          <Pottu
+          <Response
             change={handleFileChange}
             upload={handleUpload}
             transcribedText={transcribedText}
@@ -208,7 +216,7 @@ export function Dash() {
   );
 }
 
-function BellIcon(props: any) {
+function BellIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -228,7 +236,7 @@ function BellIcon(props: any) {
   );
 }
 
-function BookIcon(props: any) {
+function BookIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -247,7 +255,7 @@ function BookIcon(props: any) {
   );
 }
 
-function CircleIcon(props: any) {
+function CircleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -266,7 +274,7 @@ function CircleIcon(props: any) {
   );
 }
 
-function MessageCircleIcon(props: any) {
+function MessageCircleIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -285,7 +293,7 @@ function MessageCircleIcon(props: any) {
   );
 }
 
-function MicroscopeIcon(props: any) {
+function MicroscopeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -309,7 +317,7 @@ function MicroscopeIcon(props: any) {
   );
 }
 
-function PlusIcon(props: any) {
+function PlusIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -329,7 +337,7 @@ function PlusIcon(props: any) {
   );
 }
 
-function PowerIcon(props: any) {
+function PowerIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -349,7 +357,7 @@ function PowerIcon(props: any) {
   );
 }
 
-function ShareIcon(props: any) {
+function ShareIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
